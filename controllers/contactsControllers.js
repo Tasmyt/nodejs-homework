@@ -1,4 +1,3 @@
-const Joi = require('joi');
 const {
   listContacts,
   getContactById,
@@ -7,83 +6,50 @@ const {
   removeContact,
 } = require("../models/contacts");
 
-const { httpError } = require("../errors");
+const { httpError } = require("../helper/errors");
+const ctrlWrapper = require('../helper/ctrlWrapper');
 
-const schema = Joi.object({    
-  name: Joi.string().required(),
-  email: Joi.string().required(),
-  phone: Joi.string().required(),
-})
-
-const getList = async (req, res, next) => {
-  try {
+const getList = async (req, res) => {  
     const contacts = await listContacts();
-    res.json(contacts);
-  } catch (error) {
-    next(error);
-  }
+    res.json(contacts); 
 }
 
-const getContact = async (req, res, next) => {
-  try {
+const getContact = async (req, res) => {  
     const { contactId } = req.params;
     const contact = await getContactById(contactId);
     if (!contact) {
       throw httpError(404, "Not found");
     }
-    res.json(contact);
-  } catch (error) {
-    next(error);
-  }
+    res.json(contact);  
 }
 
-const postNewContact = async (req, res, next) => {
-  try {
-    const { error } = schema.validate(req.body);
-    if (error) {
-      throw httpError(400, error.message);
-    }
+const postNewContact = async (req, res) => {      
     const newContact = await addContact(req.body);
-    res.status(201).json(newContact);
-  } catch (error) {
-    next(error);
-  }
+    res.status(201).json(newContact);  
 }
 
-const delContact = async (req, res, next) => {
-  try {
+const delContact = async (req, res) => {  
     const { contactId } = req.params;
     const delContact = await removeContact(contactId);
     if (!delContact) {
        throw httpError(404, "Not found");
      }
     res.status(200).json(delContact);
-  } catch (error) {
-    next(error);
-  }
 }
 
-const putChangeContact = async (req, res, next) => {
-  try {
-    const { error } = schema.validate(req.body);
-    if (error) {
-      throw httpError(400, error.message);
-    }
+const putChangeContact = async (req, res) => {      
     const { contactId } = req.params;
     const contactChange = await updateContact(contactId, req.body);
      if (!contactChange) {
        throw httpError(404, "Not found");
      }
-    res.status(201).json(contactChange);
-  } catch (error) {
-    next(error);
-  }
+    res.status(201).json(contactChange);  
 }
 
 module.exports = {
-    getList,
-    getContact,
-    postNewContact,
-    delContact,
-    putChangeContact,
+    getList: ctrlWrapper(getList),
+    getContact: ctrlWrapper(getContact),
+    postNewContact: ctrlWrapper(postNewContact),
+    delContact: ctrlWrapper(delContact),
+    putChangeContact: ctrlWrapper(putChangeContact),
 }
