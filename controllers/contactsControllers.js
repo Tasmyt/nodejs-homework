@@ -24,8 +24,8 @@ const getContact = async (req, res) => {
 }
 
 const postNewContact = async (req, res) => {      
-    const newContact = await addContact(req.body);
-    res.status(201).json(newContact);  
+  const newContact = await addContact(req.body);
+  res.status(201).json(newContact);  
 }
 
 const delContact = async (req, res) => {  
@@ -34,7 +34,7 @@ const delContact = async (req, res) => {
     if (!delContact) {
        throw httpError(404, "Not found");
      }
-    res.status(200).json(delContact);
+    res.status(200).json({message: "contact deleted"});
 }
 
 const putChangeContact = async (req, res) => {      
@@ -43,7 +43,7 @@ const putChangeContact = async (req, res) => {
      if (!contactChange) {
        throw httpError(404, "Not found");
      }
-    res.status(201).json(contactChange);  
+    res.status(200).json(contactChange);  
 }
 
 module.exports = {
