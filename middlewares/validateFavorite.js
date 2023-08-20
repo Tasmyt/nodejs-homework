@@ -1,14 +1,14 @@
 const { httpError } = require("../helper/errors");
 
-const validateBody = (schema) => {
+const validateFavorite = (schema) => {
   const validateError = (req, res, next) => {
     const { error } = schema.validate(req.body);
-    const { name, email, phone} = req.body;
+    const { favorite } = req.body;
 
     if (error) {
       
-      if (!name && !email && !phone) {
-        res.status(400).json({ message: `Missing fields` });
+      if (!favorite) {
+        res.status(400).json({ message: `missing field favorite` });
       }
       next(httpError(400, error.message));
     }
@@ -17,5 +17,4 @@ const validateBody = (schema) => {
   return validateError;
 };
 
-module.exports = validateBody;
-  
+module.exports = validateFavorite;
