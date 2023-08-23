@@ -1,4 +1,4 @@
-const { httpError } = require("../helper/errors");
+const HttpError = require("../helper/HttpError");
 
 const validateBody = (schema) => {
   const validateError = (req, res, next) => {
@@ -10,7 +10,7 @@ const validateBody = (schema) => {
       if (!name && !email && !phone) {
         res.status(400).json({ message: `Missing fields` });
       }
-      next(httpError(400, error.message));
+      next(HttpError(400, error.message));
     }
     next();
   };

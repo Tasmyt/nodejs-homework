@@ -1,4 +1,4 @@
-const { httpError } = require("../helper/errors");
+const HttpError = require("../helper/HttpError");
 
 const validateFavorite = (schema) => {
   const validateError = (req, res, next) => {
@@ -10,7 +10,7 @@ const validateFavorite = (schema) => {
       if (!favorite) {
         res.status(400).json({ message: `missing field favorite` });
       }
-      next(httpError(400, error.message));
+      next(HttpError(400, error.message));
     }
     next();
   };
