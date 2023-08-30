@@ -45,10 +45,15 @@ const subscriptionShema = Joi.object({
     subscription: Joi.string().required().valid("starter", "pro", "business"),
 })
 
+const emailShema = Joi.object({
+    email: Joi.string().required(),
+})
+
 const shemas = {
     registerShema,
     loginShema,
     subscriptionShema,
+    emailShema,
 }
 
 const User = model("user", userSchema);
