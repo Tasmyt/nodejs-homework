@@ -11,6 +11,7 @@ router.post('/login', validateBody(shemas.loginShema), ctrl.login);
 router.get('/current', authenticate, ctrl.getCurrent);
 router.post('/logout', authenticate, ctrl.logout);
 router.patch('/avatars', authenticate, upload.single('avatar'), ctrl.updateAvatar);
-
+router.get('/verify/:verificationCode', ctrl.verifyEmail);
+router.post('/verify', validateBody(shemas.emailShema), ctrl.resendVerifyEmail);
 
 module.exports = router;
